@@ -9,6 +9,7 @@
 </p>
 
 <p align="center">
+  <a href="https://youtu.be/crQhPqTmjKI"><img src="https://img.shields.io/badge/Demo-Live%20Video-red?style=flat-square&logo=youtube&logoColor=white" alt="Live Demo Video" /></a>
   <a href="#-the-vayu-continuous-security-loop"><img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python Version" /></a>
   <a href="#-quickstart--installation"><img src="https://img.shields.io/badge/Tests-188%20Passing-brightgreen?style=flat-square&logo=pytest&logoColor=white" alt="Tests" /></a>
   <a href="#-vayu-web-review-console--direct-github-push"><img src="https://img.shields.io/badge/Frontend-Next.js%2016%20%7C%20Turbopack-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js" /></a>
