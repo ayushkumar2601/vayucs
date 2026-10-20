@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="https://youtu.be/crQhPqTmjKI"><img src="https://img.shields.io/badge/Demo-Live%20Video-red?style=flat-square&logo=youtube&logoColor=white" alt="Live Demo Video" /></a>
+  <a href="https://github.com/ayushkumar2601"><img src="https://img.shields.io/badge/Made%20by-Ayush%20Kumar-blueviolet?style=flat-square&logo=github" alt="Made by Ayush Kumar" /></a>
   <a href="#-the-vayu-continuous-security-loop"><img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python Version" /></a>
   <a href="#-quickstart--installation"><img src="https://img.shields.io/badge/Tests-188%20Passing-brightgreen?style=flat-square&logo=pytest&logoColor=white" alt="Tests" /></a>
   <a href="#-vayu-web-review-console--direct-github-push"><img src="https://img.shields.io/badge/Frontend-Next.js%2016%20%7C%20Turbopack-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js" /></a>
@@ -76,8 +77,8 @@ sequenceDiagram
 
 | Feature | Technical Implementation | Benefit |
 |---|---|---|
-| **Zero-Footprint REST Client** | [`crs/verification/cloud/do_client.py`](file:///Users/ayush/Desktop/hackto/vayu/crs/verification/cloud/do_client.py) written purely with Python standard library `urllib.request`. | Zero bloated third-party cloud SDKs or heavy external dependencies. |
-| **In-Memory Cryptography** | [`crs/verification/cloud/ssh_tunnel.py`](file:///Users/ayush/Desktop/hackto/vayu/crs/verification/cloud/ssh_tunnel.py) generates Ed25519 keypairs strictly in RAM. | Private keys never touch host disk blocks, preventing credential leakage. |
+| **Zero-Footprint REST Client** | [`crs/verification/cloud/do_client.py`](crs/verification/cloud/do_client.py) written purely with Python standard library `urllib.request`. | Zero bloated third-party cloud SDKs or heavy external dependencies. |
+| **In-Memory Cryptography** | [`crs/verification/cloud/ssh_tunnel.py`](crs/verification/cloud/ssh_tunnel.py) generates Ed25519 keypairs strictly in RAM. | Private keys never touch host disk blocks, preventing credential leakage. |
 | **Hardware-Isolated KVM** | DigitalOcean `s-1vcpu-1gb` standard droplets (Ubuntu 24.04 LTS x64) provisioned in ~45 seconds. | Kernel-level hardware hypervisor boundary shields developer systems from malicious exploits. |
 | **Cloud-Init Safety TTL Failsafe** | Cloud-init injects `echo "shutdown -h +10 'VAYU Safety TTL'" \| at now` on first boot. | If local network drops or host loses power, DigitalOcean automatically self-destructs the instance after 10m. |
 | **Micro-Billing Cost Model** | Droplets exist only for the ~60-90 second verification duration. | DigitalOcean per-second billing results in **~$0.0007 per full verification run** (< 0.1¢ per audit). |
@@ -152,7 +153,7 @@ VAYU includes an enterprise-grade, high-performance web interface built with **N
 
 - **Segmented Sandbox Toggle**: Switch between `☁ DigitalOcean` hardware hypervisor Droplets and `💻 Local /tmp` with one click.
 - **Verification & Proof Telemetry Card**: Visualizes the active DigitalOcean Droplet instance (`s-1vcpu-1gb`), datacenter region (`NYC3`), Ed25519 in-memory tunnel, and `INV-DO-2` auto-teardown safety guarantee.
-- **🐙 One-Click Push to GitHub**: Integrates with [`POST /api/git/push`](file:///Users/ayush/Desktop/hackto/vayu/vayu-nextjs/app/api/git/push/route.ts) to automatically stage, commit verified security patches with rich metadata, and push directly to `origin/main`.
+- **🐙 One-Click Push to GitHub**: Integrates with [`POST /api/git/push`](vayu-nextjs/app/api/git/push/route.ts) to automatically stage, commit verified security patches with rich metadata, and push directly to `origin/main`.
 - **Keyboard-Driven Shortcuts**: Navigate reviews with `J`/`K`, toggle tabs with `1`-`5`, trigger runs with `R`, and push code with `P`.
 
 <p align="center">
@@ -218,7 +219,7 @@ vayu skills doctor
 
 ## 🔌 Model Context Protocol (MCP) Server
 
-VAYU implements an enterprise **FastMCP Protocol Server** ([`crs/mcp/server.py`](file:///Users/ayush/Desktop/hackto/vayu/crs/mcp/server.py)), enabling AI-assisted developer environments (Claude Desktop, Cursor, Antigravity IDE, Zed) to natively invoke VAYU's cyber reasoning capabilities:
+VAYU implements an enterprise **FastMCP Protocol Server** ([`crs/mcp/server.py`](crs/mcp/server.py)), enabling AI-assisted developer environments (Claude Desktop, Cursor, Antigravity IDE, Zed) to natively invoke VAYU's cyber reasoning capabilities:
 
 ```json
 {
@@ -372,13 +373,19 @@ vayu scan samples/vulnerable/command_injection --sandbox digitalocean
 
 ---
 
+## 👤 Author
+
+Made with ❤️ by **[Ayush Kumar](https://github.com/ayushkumar2601)**
+
+---
+
 ## 📄 License
 
-VAYU is released under the **Apache 2.0 License**. See [LICENSE](file:///Users/ayush/Desktop/hackto/vayu/LICENSE) for details.
+VAYU is released under the **Apache 2.0 License**. See [LICENSE](LICENSE) for details.
 
 ---
 
 <p align="center">
-  <sub>Built with pride for Hacktoberfest & modern application security teams worldwide.</sub><br/>
+  <sub>Made with ❤️ by <a href="https://github.com/ayushkumar2601">Ayush Kumar</a> • Built with pride for Hacktoberfest & modern application security teams worldwide.</sub><br/>
   <b>VAYU — The Autonomous Cyber Reasoning System.</b>
 </p>
