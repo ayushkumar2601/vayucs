@@ -14,6 +14,7 @@
   <a href="#-the-vayu-continuous-security-loop"><img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python Version" /></a>
   <a href="#-quickstart--installation"><img src="https://img.shields.io/badge/Tests-188%20Passing-brightgreen?style=flat-square&logo=pytest&logoColor=white" alt="Tests" /></a>
   <a href="#-vayu-web-review-console--direct-github-push"><img src="https://img.shields.io/badge/Frontend-Next.js%2016%20%7C%20Turbopack-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js" /></a>
+  <a href="#-comprehensive-documentation-suite"><img src="https://img.shields.io/badge/Docs-Full%20Technical%20Spec-blue?style=flat-square&logo=gitbook&logoColor=white" alt="Full Technical Docs" /></a>
   <a href="#-security-invariants"><img src="https://img.shields.io/badge/Invariants-Byte--Identical%20Original%20Repo-critical?style=flat-square&logo=git&logoColor=white" alt="Invariants" /></a>
   <a href="#-license"><img src="https://img.shields.io/badge/License-Apache%202.0-yellow?style=flat-square" alt="License" /></a>
 </p>
@@ -21,6 +22,27 @@
 <p align="center">
   <img src="pics/landingpage.png" alt="VAYU — Autonomous Cyber Reasoning System" width="100%" style="border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);" />
 </p>
+
+---
+
+## 📚 Comprehensive Documentation Suite
+
+| Document | Purpose & Key Topics | Link |
+|---|---|:---:|
+| **⚡ Master Technical Documentation** | Complete, monolithic technical specification: architecture, algorithms, data contracts, STRIDE threat models, and operational runbooks. | **[TECHNICAL_DOCUMENTATION.md](TECHNICAL_DOCUMENTATION.md)** |
+| **📖 Documentation Hub** | Central documentation portal and index linking all sub-guides. | **[docs/README.md](docs/README.md)** |
+| **🏛️ System Architecture Specification** | Deep architectural breakdown, 7-layer topology, finding state machine, and DARPA AIxCC design principles. | **[ARCHITECTURE.md](ARCHITECTURE.md)** |
+| **🛡️ Formal Security Invariants** | Formal mathematical safety proofs, fail-closed guarantees, and zero-trust LLM boundary definitions. | **[DESIGN.md](DESIGN.md)** |
+| **☁️ Verification & Cloud Sandboxing** | Dual-mode verification: local `/tmp` sandboxes vs. **DigitalOcean KVM Droplets** with RAM-only Ed25519 tunnels and 10m TTL kill switch. | **[docs/cloud-and-local-sandboxing.md](docs/cloud-and-local-sandboxing.md)** |
+| **💻 CLI & Operational Reference** | Complete reference for `vayu`, `vayu scan`, `vayu skills`, `vayu-mcp`, arguments, flags, and exit codes. | **[docs/cli-reference.md](docs/cli-reference.md)** |
+| **🔌 Model Context Protocol (MCP) Server** | Architecture and API specification for the 9 core MCP tools running over standard `stdio`. | **[docs/mcp-server.md](docs/mcp-server.md)** |
+| **🖥️ MCP Client Configuration Guide** | Complete setup guide for Claude Desktop, Cursor, Windsurf, Claude Code, and Goose. | **[docs/mcp-clients.md](docs/mcp-clients.md)** |
+| **🔒 MCP Security & Boundary Defense** | Filesystem containment, session isolation, and access control policies for MCP. | **[docs/mcp-security.md](docs/mcp-security.md)** |
+| **🧠 Agent Skills Ecosystem** | Architecture of the Agent Skills framework, bundled catalog of 8 skills, and `vayu skills` CLI workflows. | **[docs/skills-ecosystem.md](docs/skills-ecosystem.md)** |
+| **🌐 Web Dashboard & Review Console** | Next.js 16 Web Dashboard, NDJSON streaming wire protocol (`crs.stream`), 3D WebGL terrain, and direct GitHub commit/PR push. | **[docs/web-review-console.md](docs/web-review-console.md)** |
+| **🔐 Cryptographic Provenance & SARIF** | in-toto SLSA v1.0 attestations, ECDSA (P-256) digital signatures, and OASIS SARIF v2.1.0 reporting. | **[docs/slsa-and-sarif.md](docs/slsa-and-sarif.md)** |
+| **📚 Python API & Data Contracts** | Comprehensive Python API reference for all classes, methods, and Pydantic schemas. | **[docs/api-reference.md](docs/api-reference.md)** |
+| **🎬 Presentation & Live Demo Guide** | Word-for-word presentation script, terminal matrix, and judge Q&A defense playbook. | **[DEMO_GUIDE.md](DEMO_GUIDE.md)** |
 
 ---
 
