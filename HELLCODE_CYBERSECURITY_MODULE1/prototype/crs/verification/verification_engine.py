@@ -1,0 +1,174 @@
+from __future__ import annotations
+"""Fail-closed orchestration for isolated patch verification."""
+
+from pathlib import Path
+from typing import Callable
+
+from crs.core.schemas import PatchProposal, VerificationResult, VulnerabilityFinding
+from crs.patching.patch_validator import PatchValidator
+from crs.verification.patch_applier import PatchApplier
+from crs.verification.security_verifier import SecurityVerifier
+from crs.verification.test_runner import TestRunner
+from crs.verification.workspace import EphemeralWorkspace
+
+
+class VerificationEngine:
+    """Apply and verify a proposal only within a disposable repository copy."""
+
+    def __init__(
+        self,
+        patch_validator: PatchValidator | None = None,
+        patch_applier: PatchApplier | None = None,
+        test_runner: TestRunner | None = None,
+        security_verifier: SecurityVerifier | None = None,
+        workspace_factory: Callable[[str], Any] | None = None,
+        sandbox_provider: str = "local",
+    ) -> None:
+        self.patch_validator = patch_validator or PatchValidator()
+        self.patch_applier = patch_applier or PatchApplier()
+        self.test_runner = test_runner or TestRunner()
+        self.security_verifier = security_verifier or SecurityVerifier()
+        self.sandbox_provider = sandbox_provider
+
+        if workspace_factory is not None:
+            self.workspace_factory = workspace_factory
+        elif sandbox_provider == "digitalocean":
+            from crs.verification.cloud.do_workspace import DigitalOceanSandboxWorkspace
+            self.workspace_factory = DigitalOceanSandboxWorkspace
+        else:
+            self.workspace_factory = EphemeralWorkspace
+
+
+    def verify(
+        self,
+        repository_root: str,
+        original_finding: VulnerabilityFinding,
+        patch: PatchProposal,
+        on_check: Callable[[str, bool, str], None] | None = None,
+    ) -> VerificationResult:
+        """Return deterministic approval while leaving the original untouched.
+
+        ``on_check`` is told the outcome of each check as it completes. It only
+        observes; approval is still decided solely by the checks below.
+        """
+
+        def report(name: str, passed: bool, reason: str) -> None:
+            if on_check is not None:
+                on_check(name, passed, reason)
+
+        validation = self.patch_validator.validate(
+            patch, original_finding, repository_root=repository_root
+        )
+        if not validation.valid:
+            return self._rejected(f"Patch validation failed: {validation.reason}")
+
+        build_passed = tests_passed = security_passed = rescan_clean = False
+        sandbox_meta = None
+        try:
+            with self.workspace_factory(repository_root) as workspace:
+                if workspace.path is None:
+                    raise RuntimeError("Temporary workspace was not created")
+                patched_root = workspace.path
+                self.patch_applier.apply(patched_root, patch)
+
+                if hasattr(workspace, "sync_to_remote"):
+                    workspace.sync_to_remote()
+
+                if hasattr(workspace, "droplet_metadata") and workspace.droplet_metadata:
+                    meta = workspace.droplet_metadata
+                    sandbox_meta = {
+                        "droplet_id": meta.droplet_id,
+                        "name": meta.name,
+                        "ip_address": meta.ip_address,
+                        "region": meta.region,
+                        "size": meta.size,
+                        "image": meta.image,
+                    }
+
+                build = self.test_runner.syntax_check(
+                    patched_root, patch.target_file
+                )
+                build_passed = build.passed
+                report("build", build_passed, build.reason)
+                if not build_passed:
+                    return self._result(
+                        build_passed, False, False, False, build.reason,
+                        sandbox_provider=self.sandbox_provider,
+                        sandbox_metadata=sandbox_meta,
+                    )
+
+                tests = self.test_runner.run_tests(patched_root)
+                tests_passed = tests.passed
+                report("tests", tests_passed, tests.reason)
+                if not tests_passed:
+                    return self._result(
+                        True, False, False, False, tests.reason,
+                        sandbox_provider=self.sandbox_provider,
+                        sandbox_metadata=sandbox_meta,
+                    )
+
+                security = self.security_verifier.run_regression(
+                    patched_root, patch.target_file, original_finding
+                )
+                security_passed = security.passed
+                report("security_regression", security_passed, security.reason)
+                if not security_passed:
+                    return self._result(
+                        True, True, False, False, security.reason,
+                        sandbox_provider=self.sandbox_provider,
+                        sandbox_metadata=sandbox_meta,
+                    )
+
+                rescan = self.security_verifier.rescan(
+                    patched_root, patch.target_file, original_finding
+                )
+                rescan_clean = rescan.passed
+                report("static_rescan", rescan_clean, rescan.reason)
+                if not rescan_clean:
+                    return self._result(
+                        True, True, True, False, rescan.reason,
+                        sandbox_provider=self.sandbox_provider,
+                        sandbox_metadata=sandbox_meta,
+                    )
+        except Exception as exc:
+            return self._result(
+                build_passed,
+                tests_passed,
+                security_passed,
+                rescan_clean,
+                f"Verification failed closed: {exc}",
+                sandbox_provider=self.sandbox_provider,
+                sandbox_metadata=sandbox_meta,
+            )
+
+        provider_desc = f"in {self.sandbox_provider.upper()} sandbox" if self.sandbox_provider != "local" else "in isolated workspace"
+        return self._result(
+            True, True, True, True, f"Patch verified {provider_desc}",
+            sandbox_provider=self.sandbox_provider,
+            sandbox_metadata=sandbox_meta,
+        )
+
+    def _rejected(self, reason: str) -> VerificationResult:
+        return self._result(False, False, False, False, reason, sandbox_provider=self.sandbox_provider)
+
+    @staticmethod
+    def _result(
+        build: bool,
+        tests: bool,
+        security: bool,
+        rescan: bool,
+        reason: str,
+        sandbox_provider: str = "local",
+        sandbox_metadata: dict | None = None,
+    ) -> VerificationResult:
+        return VerificationResult(
+            build_passed=build,
+            tests_passed=tests,
+            security_test_passed=security,
+            static_rescan_clean=rescan,
+            approved=build and tests and security and rescan,
+            reason=reason,
+            sandbox_provider=sandbox_provider,
+            sandbox_metadata=sandbox_metadata,
+        )
+

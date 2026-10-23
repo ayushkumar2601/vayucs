@@ -11,3 +11,6 @@ semgrep>=1.0
 
 # Model Context Protocol (MCP) SDK
 mcp>=1.0.0
+
+# Graph database driver for Code Property Graph (CPG) & Graph-RAG
+neo4j>=5.18.0

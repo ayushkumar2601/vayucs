@@ -30,6 +30,7 @@ dependencies = [
     "cryptography>=42.0",
     "semgrep>=1.0",
     "mcp>=1.0.0",
+    "neo4j>=5.18.0",
 ]
 
 [project.optional-dependencies]

@@ -1,0 +1,48 @@
+rules:
+  - id: aikavach.python.subprocess-shell-true
+    message: User-controlled command execution may be possible when subprocess uses shell=True.
+    severity: ERROR
+    languages:
+      - python
+    patterns:
+      - pattern: subprocess.$FUNC(..., shell=True, ...)
+
+  - id: aikavach.python.sql-string-concatenation
+    message: SQL query built with string formatting or concatenation may lead to SQL Injection.
+    severity: ERROR
+    languages:
+      - python
+    patterns:
+      - pattern: $CURSOR.execute(f"...")
+
+  - id: aikavach.python.insecure-deserialization-pickle
+    message: Insecure deserialization using pickle.loads may lead to arbitrary code execution.
+    severity: ERROR
+    languages:
+      - python
+    patterns:
+      - pattern: pickle.loads(...)
+
+  - id: aikavach.python.path-traversal-open
+    message: Unsanitized file path passed to open() may allow arbitrary directory traversal and file read.
+    severity: WARNING
+    languages:
+      - python
+    patterns:
+      - pattern: open(os.path.join($DIR, $FILE), ...)
+
+  - id: aikavach.python.hardcoded-jwt-secret
+    message: Hardcoded cryptographic secret key in source code.
+    severity: WARNING
+    languages:
+      - python
+    patterns:
+      - pattern: JWT_SIGNING_KEY = "..."
+
+  - id: aikavach.python.weak-md5-hashing
+    message: Insecure cryptographic hashing using MD5.
+    severity: WARNING
+    languages:
+      - python
+    patterns:
+      - pattern: hashlib.md5(...)

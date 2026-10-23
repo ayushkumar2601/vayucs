@@ -25,6 +25,8 @@ from vayu_mcp.tools import (
     tool_propose_patch,
     tool_scan_repository,
     tool_verify_patch,
+    tool_trace_taint_path,
+    tool_get_blast_radius,
 )
 
 # Configure logging strictly to stderr to prevent polluting the stdio transport on stdout
@@ -207,6 +209,28 @@ def create_server(config: MCPConfig | None = None) -> FastMCP:
         """
         fid = finding_id if finding_id.strip() else None
         return tool_get_provenance(run_id, finding_id=fid, config=cfg)
+
+    @mcp.tool(
+        name="vayu_trace_taint_path",
+        description=(
+            "Trace inter-procedural taint reachability paths from sources to sinks "
+            "across repository files using the Code Property Graph (CPG) & Neo4j."
+        ),
+    )
+    def vayu_trace_taint_path(target_path: str) -> dict:
+        """Trace cross-file taint flows using the Code Property Graph."""
+        return tool_trace_taint_path(target_path, config=cfg)
+
+    @mcp.tool(
+        name="vayu_get_blast_radius",
+        description=(
+            "Compute the call dependency blast radius and identify affected functions/files "
+            "prior to applying a candidate patch."
+        ),
+    )
+    def vayu_get_blast_radius(target_path: str, target_file: str, function_name: str) -> dict:
+        """Compute caller blast radius for a target function."""
+        return tool_get_blast_radius(target_path, target_file, function_name, config=cfg)
 
     return mcp
 

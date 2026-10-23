@@ -1,0 +1,16 @@
+pydantic>=2.0
+pytest>=8.0
+
+# CLI rendering and signed provenance
+click>=8.0
+rich>=13.0
+cryptography>=42.0
+
+# Static-analysis tool
+semgrep>=1.0
+
+# Model Context Protocol (MCP) SDK
+mcp>=1.0.0
+
+# Graph database driver for Code Property Graph (CPG) & Graph-RAG
+neo4j>=5.18.0

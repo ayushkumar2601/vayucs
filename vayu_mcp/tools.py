@@ -623,3 +623,69 @@ def tool_get_provenance(
             "policy": "fail-closed",
         },
     }
+
+
+def tool_trace_taint_path(
+    target_path: str,
+    config: MCPConfig | None = None,
+) -> dict[str, Any]:
+    """Analyze a repository using the Code Property Graph (CPG) & Neo4j to trace taint flows."""
+    from crs.graph.neo4j_client import Neo4jClient
+    from crs.static_analysis.taint_graph import TaintGraphAnalyzer
+
+    cfg = config or MCPConfig()
+    boundary = cfg.validate_target_path(target_path)
+
+    neo4j_client = Neo4jClient()
+    neo4j_client.connect()
+    analyzer = TaintGraphAnalyzer(neo4j_client=neo4j_client)
+    flows = analyzer.analyze_repository(boundary)
+
+    return {
+        "repository": str(boundary),
+        "neo4j_connected": neo4j_client.is_available,
+        "flow_count": len(flows),
+        "flows": [
+            {
+                "source": {"file": f.source.file, "line": f.source.line, "name": f.source.name},
+                "sink": {"file": f.sink.file, "line": f.sink.line, "name": f.sink.name},
+                "call_stack": f.call_stack,
+            }
+            for f in flows
+        ],
+    }
+
+
+def tool_get_blast_radius(
+    target_path: str,
+    target_file: str,
+    function_name: str,
+    config: MCPConfig | None = None,
+) -> dict[str, Any]:
+    """Compute call dependency blast radius for a target function in the repository."""
+    from crs.graph.blast_radius import BlastRadiusAnalyzer
+    from crs.graph.cpg_indexer import CPGIndexer
+    from crs.graph.neo4j_client import Neo4jClient
+
+    cfg = config or MCPConfig()
+    boundary = cfg.validate_target_path(target_path)
+
+    neo4j_client = Neo4jClient()
+    neo4j_client.connect()
+
+    indexer = CPGIndexer(neo4j_client=neo4j_client)
+    cpg = indexer.index_repository(boundary)
+
+    analyzer = BlastRadiusAnalyzer(cpg=cpg, neo4j_client=neo4j_client)
+    res = analyzer.analyze(target_file, function_name)
+
+    return {
+        "repository": str(boundary),
+        "neo4j_connected": neo4j_client.is_available,
+        "target_file": res.target_file,
+        "target_function": res.target_function,
+        "affected_functions": res.affected_functions,
+        "affected_files": res.affected_files,
+        "prioritized_test_files": res.prioritized_test_files,
+        "impact_score": res.impact_score,
+    }

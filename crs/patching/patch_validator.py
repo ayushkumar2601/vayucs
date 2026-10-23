@@ -183,3 +183,39 @@ class PatchValidator:
         return PatchValidationResult(
             valid=False, reason=reason, files_touched=files_touched or []
         )
+
+    def compute_blast_radius(
+        self,
+        proposal: PatchProposal,
+        repository_root: str,
+        analyzer: Optional[Any] = None,
+    ) -> dict[str, Any]:
+        """Compute blast radius of the patch proposal across the call graph."""
+        from crs.graph.blast_radius import BlastRadiusAnalyzer
+        from crs.graph.cpg_indexer import CPGIndexer
+
+        root = Path(repository_root).expanduser().resolve()
+        if analyzer is None:
+            indexer = CPGIndexer()
+            cpg = indexer.index_repository(root)
+            analyzer = BlastRadiusAnalyzer(cpg=cpg)
+
+        # Attempt to determine function name from diff line or target
+        func_name = "target"
+        diff_lines = proposal.unified_diff.splitlines()
+        for line in diff_lines:
+            if line.startswith("@@"):
+                match = self.HUNK_HEADER.match(line)
+                if match:
+                    func_name = line.split("@@")[-1].strip() or "target"
+                    break
+
+        res = analyzer.analyze(proposal.target_file, func_name)
+        return {
+            "target_file": res.target_file,
+            "target_function": res.target_function,
+            "affected_functions": res.affected_functions,
+            "affected_files": res.affected_files,
+            "prioritized_test_files": res.prioritized_test_files,
+            "impact_score": res.impact_score,
+        }

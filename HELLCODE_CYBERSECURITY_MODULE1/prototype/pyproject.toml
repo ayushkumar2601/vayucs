@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vayu-crs"
+version = "0.1.0"
+description = "VAYU: Autonomous Cyber Reasoning System (CRS) with MCP Server"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "VAYU Development Team" }
+]
+keywords = ["cyber-reasoning-system", "security", "sast", "semgrep", "mcp", "model-context-protocol", "slsa"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Security",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "pydantic>=2.0",
+    "pytest>=8.0",
+    "click>=8.0",
+    "rich>=13.0",
+    "cryptography>=42.0",
+    "semgrep>=1.0",
+    "mcp>=1.0.0",
+    "neo4j>=5.18.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23.0",
+]
+
+[project.scripts]
+vayu = "crs.vayu:main"
+vayu-mcp = "vayu_mcp.server:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["crs*", "vayu_mcp*"]
+
+[tool.setuptools.package-data]
+crs = ["skills_catalog/**/*", "rules/**/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
