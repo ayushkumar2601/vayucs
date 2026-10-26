@@ -13,10 +13,10 @@
 <p align="center">
   <a href="https://youtu.be/crQhPqTmjKI"><img src="https://img.shields.io/badge/Demo-Live%20Video-red?style=flat-square&logo=youtube&logoColor=white" alt="Live Demo Video" /></a>
   <a href="https://github.com/ayushkumar2601/vayu_hacktoberfest"><img src="https://img.shields.io/badge/GitHub-ayushkumar2601%2Fvayu-blueviolet?style=flat-square&logo=github" alt="GitHub Repo" /></a>
-  <a href="#-the-vayu-continuous-security-loop"><img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python Version" /></a>
-  <a href="#-quickstart--installation"><img src="https://img.shields.io/badge/Tests-195%20Passing-brightgreen?style=flat-square&logo=pytest&logoColor=white" alt="195 Passing Tests" /></a>
-  <a href="#-vayu-web-review-console--direct-github-push"><img src="https://img.shields.io/badge/Frontend-Next.js%2016%20%7C%20Turbopack-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js 16" /></a>
-  <a href="#-security-invariants"><img src="https://img.shields.io/badge/Invariants-Byte--Identical%20Original%20Repo-critical?style=flat-square&logo=git&logoColor=white" alt="Invariants" /></a>
+  <a href="#-quickstart--operational-guide"><img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python Version" /></a>
+  <a href="#-quickstart--operational-guide"><img src="https://img.shields.io/badge/Tests-195%20Passing-brightgreen?style=flat-square&logo=pytest&logoColor=white" alt="195 Passing Tests" /></a>
+  <a href="#-enterprise-web-review-console--direct-github-push"><img src="https://img.shields.io/badge/Frontend-Next.js%2016%20%7C%20Turbopack-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js 16" /></a>
+  <a href="#-formal-mathematical-security-invariants"><img src="https://img.shields.io/badge/Invariants-Byte--Identical%20Original%20Repo-critical?style=flat-square&logo=git&logoColor=white" alt="Invariants" /></a>
   <a href="#-license"><img src="https://img.shields.io/badge/License-Apache%202.0-yellow?style=flat-square" alt="License" /></a>
 </p>
 
@@ -26,55 +26,61 @@
 
 ---
 
-## 🚨 The Threat Landscape: Why VAYU is Needed Right Now
+## 🚨 The Threat Landscape: Why VAYU is Critical in 2024–2026
 
-The global software supply chain is facing an existential crisis. The discovery of critical vulnerabilities has surged, but the average enterprise **Mean Time to Remediate (MTTR) still exceeds 68 days**. Detection has been automated by hundreds of noisy scanners, but **remediation remains manual, slow, and human-constrained**. 
+The modern software supply chain is facing an existential crisis. The discovery rate of critical zero-day vulnerabilities has outpaced human remediation capacity by orders of magnitude: the industry-average **Mean Time to Remediate (MTTR) still exceeds 68 days**. While security monitoring tools generate thousands of alerts, **remediation remains manual, slow, and error-prone**.
 
-Recent catastrophic cyber attacks demonstrate that software defects in ubiquitous runtimes and supply chains can paralyze global infrastructure within hours:
+Recent high-profile breaches demonstrate how critical infrastructure and enterprise applications collapse when multi-file taint paths and parameter injections go unaddressed:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                        RECENT BREAKING CYBER INCIDENTS (2024–2026)                     │
+│                        CRITICAL RECENT THREATS & ZERO-DAY VULNERABILITIES              │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
-│ 🌐 PHP CGI Argument Injection (CVE-2024-4577)                                         │
-│    • Impact: ~70% of the public web affected. Millions of automated RCE exploits       │
-│      launched within 16 hours of disclosure, forcing governments & corporations to      │
-│      pull websites offline to race against automated attacker botnets.                 │
+│ 🌐 PHP CGI Argument Injection (CVE-2024-4577) — CVSS 9.8 (CRITICAL)                    │
+│    • Vector: "Best-Fit" unicode character conversion flaw in Windows PHP engines.      │
+│    • Exploit: Soft hyphens (%ad) bypass input filters and translate into command-line  │
+│      dashes (-), enabling attackers to pass arbitrary runtime arguments (-d) directly │
+│      into the PHP binary to achieve unauthenticated Remote Code Execution (RCE).       │
+│    • Global Impact: Affected ~70% of public web infrastructure running PHP on Windows. │
+│      Automated ransomware & botnet campaigns weaponized the exploit within 16 hours.  │
 │                                                                                        │
-│ 📦 "Node2Shell" Brotli RCE (CVE-2026-111497) & Malicious npm Packages                  │
-│    • Impact: Out-of-bounds write in Node.js's bundled Brotli decompressor triggering   │
-│      RCE in Express/Fetch servers. Concurrently, malicious versions of 'node-ipc'       │
-│      (9.1.6, 9.2.3, 12.0.1) poisoned CI/CD runners to exfiltrate production secrets.   │
+│ 🔏 eMudhra PKI & Digital Signature Ingestion Parameter Tampering                      │
+│    • Vector: Cross-module parameter flow in enterprise digital signature issuance      │
+│      and identity verification infrastructure.                                         │
+│    • Exploit: User-controlled input entering at web route layers bypassed front-end    │
+│      validation and flowed through decoupled middleware into backend cryptographic     │
+│      signing sinks, enabling unauthorized digital certificate generation and signing. │
+│    • Enterprise Impact: Compromised trust chains for banking and tax compliance        │
+│      gateways, proving that single-file SAST tools are blind to cross-module taint.    │
 │                                                                                        │
-│ 🔓 Mythos-Class AI Jailbreaks & Adversarial Prompt Injections                          │
-│    • Impact: Security researchers demonstrated multi-agent jailbreaks against frontier │
-│      cyber-offensive models (Claude Mythos preview), bypassing safety alignment to     │
-│      generate weaponized zero-days. Proves that unconstrained LLM scripts in CI/CD      │
-│      are an acute attack vector without strict Prompt Firewalls & sandboxing.          │
+│ 📦 "Node2Shell" Brotli RCE (CVE-2026-111497) & Malicious npm Supply Chain Poisoning   │
+│    • Vector: Out-of-bounds heap write in Node.js bundled decompression routines paired │
+│      with weaponized package mutations (e.g. malicious versions of node-ipc).         │
+│    • Exploit: Poisoned dependencies hijack CI/CD execution environments, silently     │
+│      exfiltrating production secrets, API tokens, and cloud credentials.               │
 │                                                                                        │
-│ 🛒 Shopify Third-Party App Checkout Script Injection Wave                             │
-│    • Impact: Attackers injected malicious scripts into third-party app settings        │
-│      (Hulk Product Options, Selleasy), bypassing theme boundaries to hijack customer    │
-│      checkouts and redirect payment data to unauthorized external endpoints.           │
-│                                                                                        │
-│ 🏭 Tata Electronics Supply-Chain Data Breach ("World Leaks")                           │
-│    • Impact: 630 GB (200,000+ files) of proprietary iPhone factory inspection         │
-│      schematics and Tesla technical drawings leaked online via vendor compromise.      │
+│ 🔓 Adversarial Prompt Injections & AI Agent Hijacking                                  │
+│    • Vector: Malicious payloads embedded within repository comments, issue tickets,   │
+│      and pull request text targeting automated LLM developer assistants.               │
+│    • Exploit: Prompt injections coerce naive coding agents into disabling security     │
+│      checks, rewriting authentication logic, or committing silent backdoors.           │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### The Fatal Flaw in Existing AI Remediation
-Current attempts to automate vulnerability patching using generic AI coding assistants (Copilot, ChatGPT, or naive LLM bash scripts) fail catastrophically:
-1. **Hallucinatory Scope Creep**: Models rewrite unrelated functions, remove production comments, or delete business logic.
-2. **Whitespace & Syntax Drift**: Python, TypeScript, and YAML break due to indentation errors and invalid syntax trees.
-3. **Prompt Injection Susceptibility**: Malicious payloads or adversarial code comments in untrusted repositories hijack the LLM, tricking it into injecting backdoors.
-4. **Single-File Blindness**: Scanners inspect isolated files, missing **cross-module inter-procedural taint flows** where user input in `routes/api.py` flows through `services/` into an execution sink in `utils/`.
+### How VAYU Would Have Prevented These Catastrophic Exploits
+
+| Critical Incident | Root Cause of Traditional Failure | How VAYU Autonomously Neutralizes the Threat |
+|---|---|---|
+| **eMudhra Digital Signature Tampering** | **Single-file SAST blindness**: Scanners inspect `routes/auth.py` and `services/signer.py` in isolation, failing to recognize that unvalidated input flows across modules into the signing sink. | **Neo4j Code Property Graph (CPG) Taint Traversal**: VAYU maps repository-wide data flows. Cypher queries `(:TaintSource)-[:FLOWS_TO*]->(:CryptoSink)` immediately detect the un-sanitized path. VAYU generates an indentation-locked parameter validation patch, verifies it in an isolated sandbox, and signs SLSA provenance before code is committed. |
+| **PHP CGI Argument Injection (CVE-2024-4577)** | **Unverified patch deployment**: Human teams rushed manual regex patches that broke Apache CGI environments or failed to account for alternate unicode character encodings. | **Deterministic AST Bounding + 4-Gate Cloud Verification**: VAYU flags process-boundary invocations, constructs an atomic CLI argument quarantine, and executes a live exploit PoC inside a **DigitalOcean KVM Droplet** (Gate 3). The patch is approved only when the exploit payload is proven inert. |
+| **CI/CD Supply Chain Poisoning** | **Unsandboxed CI test runners**: Running tests locally or on shared CI workers executes malicious post-install scripts directly on the host machine. | **Hardware-Isolated Cloud Droplets**: VAYU provisions disposable, single-use DigitalOcean KVM Droplets with RAM-only Ed25519 SSH keys. Dangerous exploit tests run isolated in the cloud; Droplets are destroyed immediately on completion. |
+| **Adversarial Prompt Injections** | **Direct LLM code ingestion**: Feeding raw repository files into an LLM allows attacker comments to jailbreak the model. | **Prompt Firewall & Schema Quarantine**: VAYU strips untrusted text, isolates code snippets into bounded JSON data structures, and restricts the LLM to emitting a single-line replacement intent string. |
 
 ---
 
 ## 💡 The Solution: VAYU Autonomous Cyber Reasoning System
 
-Drawing inspiration from **DARPA's Artificial Intelligence Cyber Challenge (AIxCC)**, **VAYU** inverts the traditional remediation paradigm by transforming security triage into a **mathematically bounded, deterministic, fail-closed feedback loop**:
+Drawing inspiration from **DARPA's Artificial Intelligence Cyber Challenge (AIxCC)**, **VAYU** transforms security triage from noisy alert fatigue into a **mathematically bounded, deterministic, fail-closed feedback loop**:
 
 $$\textbf{FIND} \xrightarrow{\text{SAST + Neo4j CPG}} \textbf{REASON} \xrightarrow{\text{Prompt Firewall + Graph-RAG}} \textbf{PATCH} \xrightarrow{\text{Indentation Lock}} \textbf{VERIFY} \xrightarrow{\text{4-Gate Droplet Sandbox}} \textbf{SIGN} \xrightarrow{\text{SLSA Provenance}}$$
 
@@ -91,38 +97,46 @@ $$\textbf{FIND} \xrightarrow{\text{SAST + Neo4j CPG}} \textbf{REASON} \xrightarr
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+### Architectural Separation: Heuristic AI vs. Deterministic Proof
+
+VAYU implements strict architectural defense-in-depth: **The AI is never trusted to make decisions or write raw diffs.**
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                               TRUSTED vs. HEURISTIC BOUNDARIES                         │
+├────────────────────────────────────────────┬───────────────────────────────────────────┤
+│ 🔒 DETERMINISTIC / TRUSTED (Python Engine) │ 🤖 HEURISTIC / UNTRUSTED (Local LLM)      │
+├────────────────────────────────────────────┼───────────────────────────────────────────┤
+│ • AST parsing, Semgrep static scanning     │ • Root-cause summarization from quarantined│
+│ • Neo4j Code Property Graph & Cypher paths │   evidence packages                       │
+│ • Prompt firewall & delimiter isolation    │ • Security impact assessment              │
+│ • Indentation locking & canonical diffing  │ • Single replacement line intent string   │
+│ • Ephemeral DigitalOcean Droplet sandbox   │                                           │
+│ • 4-Gate formal verification harness       │ ⚠️ Zero authority to execute code, rewrite│
+│ • Cryptographic SLSA ECDSA-P256 signing    │    files, or approve pull requests.       │
+└────────────────────────────────────────────┴───────────────────────────────────────────┘
+```
+
 ---
 
 ## 🧠 First-Class Neo4j Integration: Code Property Graphs & Graph-RAG
 
-VAYU implements a production **Neo4j 5.x Graph Database** subsystem ([`crs/graph/`](crs/graph/)) that elevates static analysis from file-local pattern matching into an **inter-procedural, repository-scale Code Property Graph (CPG)**.
+VAYU implements an enterprise **Neo4j 5.x Graph Database** subsystem ([`crs/graph/`](crs/graph/)) that elevates static analysis from file-local pattern matching into an **inter-procedural, repository-scale Code Property Graph (CPG)**.
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                                NEO4J IN VAYU CRS TOPOLOGY                              │
-├────────────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                        │
-│  1. INGESTION & STATIC ANALYSIS:                                                       │
-│     [RepositoryLoader] ──► [AST/CPG Indexer] ──► (Neo4j: Code Property Graph)          │
-│                                                              │                         │
-│  2. TAINT & REACHABILITY:                                    ▼                         │
-│     [TaintGraphAnalyzer] ◄── Cypher Path Finding ◄── (Sources ──[:FLOWS_TO*]──► Sinks) │
-│                                                              │                         │
-│  3. GRAPH-RAG FOR REASONING:                                 ▼                         │
-│     [EvidenceBuilder] ◄── k-Hop Context Subgraph ◄── (Call Chains & Flow Invariants)   │
-│                                                              │                         │
-│  4. PATCH VALIDATION & BLAST RADIUS:                         ▼                         │
-│     [PatchValidator] ◄── Caller/Callee Impact ◄── (Upstream & Downstream Blast Radius) │
-│                                                              │                         │
-│  5. PROVENANCE & UI/MCP:                                     ▼                         │
-│     [vayu-nextjs] & [vayu-mcp] ◄── Graph Visualizer ◄── (Attack Path & Remediation)   │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+<p align="center">
+  <img src="pics/neo4j1.png" alt="Neo4j Code Property Graph Overview in VAYU" width="49%" style="border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);" />
+  <img src="pics/neo4j2.png" alt="Neo4j Taint Flow Analysis & Attack Vector Reachability" width="49%" style="border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);" />
+</p>
+<p align="center">
+  <img src="pics/neo4j3.png" alt="Neo4j Inter-Procedural Call Hierarchy" width="49%" style="border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);" />
+  <img src="pics/neo4j4.png" alt="Neo4j Blast Radius & Impact Analysis" width="49%" style="border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);" />
+</p>
 
 ### The 5 Strategic Pillars of Neo4j in VAYU
 
 #### 1. Inter-procedural Code Property Graph (CPG) & Taint Tracking
-VAYU parses all Python source files into a unified Code Property Graph combining Abstract Syntax Trees (AST), Control Flow Graphs (CFG), and Program Dependence Graphs (PDG) inside Neo4j. Native Cypher graph traversals track untrusted user input across multiple files:
+VAYU parses all source files into a unified property graph combining Abstract Syntax Trees (AST), Control Flow Graphs (CFG), and Program Dependence Graphs (PDG) inside Neo4j. Native Cypher graph traversals track untrusted user input across multiple files:
+
 ```cypher
 // Discover un-sanitized taint reachability from HTTP ingress to OS command sink
 MATCH path = (source:TaintSource)-[:FLOWS_TO*1..10]->(sink:TaintSink)
@@ -131,14 +145,18 @@ RETURN path, source.name, sink.name, [n IN nodes(path) | n.file + ":" + n.line] 
 ```
 
 #### 2. Graph-RAG Context Injection for the Reasoning Engine
-Traditional AI tools send arbitrary 5-line windows to an LLM, blinding it to outer decorators, authorization checks, and caller parameters. VAYU's [`EvidenceBuilder`](crs/reasoning/evidence_builder.py) queries Neo4j for the **$k$-hop causal subgraph** surrounding the vulnerability, injecting precise inter-procedural call chains into the prompt without token bloat:
-```python
-# Extracted causal call chain injected into prompt evidence:
-"routes/api.py:32 (handle_request) -> services/audit.py:15 (audit_host) -> utils/exec.py:4 (subprocess.run)"
+Traditional AI tools send arbitrary 5-line sliding windows to an LLM, blinding it to outer decorators, authorization checks, and caller parameters. VAYU's [`EvidenceBuilder`](crs/reasoning/evidence_builder.py) queries Neo4j for the **$k$-hop causal subgraph** surrounding the vulnerability, injecting precise inter-procedural call chains into the prompt without token bloat:
+
+```cypher
+MATCH path = (caller:Function)-[:CALLS*1..5]->(target:Function)
+WHERE target.file = $file AND target.line <= $line AND target.end_line >= $line
+RETURN [n IN nodes(path) | n.file + ":" + n.line + " (" + n.name + ")"] AS chain
+LIMIT 1
 ```
 
 #### 3. Patch Blast Radius & Selective Test Prioritization
 Before running verification, [`BlastRadiusAnalyzer`](crs/graph/blast_radius.py) traverses caller hierarchies in Neo4j:
+
 ```cypher
 MATCH (target:Function {name: $fn})<-[:CALLS*1..4]-(caller:Function)
 RETURN count(DISTINCT caller) AS blast_radius, collect(DISTINCT caller.file) AS affected_files
@@ -147,15 +165,17 @@ This identifies exactly which downstream services and unit tests cover the modif
 
 #### 4. Vulnerability & Remediation Knowledge Graph (Persistent Memory)
 Remediation history is persisted in Neo4j, mapping repositories, commits, findings, CWE taxonomies, and verified patches:
+
 ```cypher
-(:Repository)-[:HAS_FINDING]->(:Finding)-[:CLASSIFIED_AS]->(:CWE {id: "CWE-78"})
-(:Finding)-[:RESOLVED_BY]->(:Patch {status: "VERIFIED", diff: "..."})
+MATCH (r:Repository {id: $repo})-[:HAS_FINDING]->(f:Finding)-[:CLASSIFIED_AS]->(c:CWE)
+MATCH (f)-[:RESOLVED_BY]->(p:Patch {status: "VERIFIED"})
+RETURN c.id, count(p) AS verified_patches, collect(p.diff) AS patterns
 ```
 When future vulnerabilities are detected, VAYU queries Neo4j for previously verified patch templates to achieve one-shot convergence.
 
-#### 5. Interactive Attack Graph in Next.js & MCP Tools
-* **Interactive Threat Graph**: The Next.js dashboard visualizes the attack chain from attacker input $\rightarrow$ intermediary calls $\rightarrow$ vulnerable sink, highlighting the exact node where VAYU's patch severs the exploit.
-* **Model Context Protocol (MCP)**: AI coding assistants in Cursor and Claude Desktop can invoke `vayu_trace_taint_path` and `vayu_get_blast_radius` natively over standard I/O.
+#### 5. Interactive Visualizer in Web Console & FastMCP Tools
+* **Attack Graph Visualizer**: The Next.js dashboard visualizes the attack chain from attacker input $\rightarrow$ intermediary calls $\rightarrow$ vulnerable sink, highlighting the exact edge severed by VAYU's patch.
+* **Model Context Protocol (MCP)**: AI coding assistants in Cursor and Claude Desktop invoke `vayu_trace_taint_path` and `vayu_get_blast_radius` natively over standard I/O.
 
 ---
 
@@ -226,7 +246,7 @@ A candidate patch is designated `VERIFIED` if and only if it survives four seque
 
 ---
 
-## 🖥️ VAYU Web Review Console & Direct GitHub Push
+## 🖥️ Enterprise Web Review Console & Direct GitHub Push
 
 VAYU includes an enterprise-grade web interface built with **Next.js 16 (Turbopack)** and a sleek Linear/GitHub security review design aesthetic (`/reviews`):
 
@@ -237,6 +257,7 @@ VAYU includes an enterprise-grade web interface built with **Next.js 16 (Turbopa
 ### Key Web Console Features
 * **Segmented Sandbox Toggle**: Switch between `☁ DigitalOcean` hardware hypervisor Droplets and `💻 Local /tmp` with one click.
 * **Verification & Proof Telemetry**: Visualizes active DigitalOcean Droplet telemetry, region (`NYC3`), Ed25519 RAM tunnel, and `INV-DO-2` auto-teardown guarantee.
+* **Cryptographic SLSA Provenance**: Displays in-toto SLSA v1.0 verifiable attestation digests with ECDSA digital signatures.
 * **🐙 Direct GitHub Push & PR**: Integrates with [`POST /api/git/push`](vayu-nextjs/app/api/git/push/route.ts) to automatically stage, commit verified security patches with rich provenance metadata, and push directly to `origin/main`.
 * **Keyboard-Driven Shortcuts**: Navigate reviews with `J`/`K`, toggle tabs with `1`-`5`, trigger runs with `R`, and push code with `P`.
 
@@ -261,7 +282,7 @@ For security operations centers and architectural oversight, VAYU includes an in
 
 ---
 
-## 🧰 VAYU Skills CLI Engine
+## 🧰 Modular VAYU Skills CLI Engine
 
 Inspired by Anthropic's developer experience, VAYU includes a dedicated **Skills CLI** (`vayu skills`) with an animated terminal installer, dependency management, and health diagnostics:
 
@@ -308,65 +329,7 @@ VAYU implements an enterprise **FastMCP Protocol Server** ([`vayu_mcp/server.py`
 
 ---
 
-## 🚀 Quickstart & Installation
-
-### Prerequisites
-* **Python 3.10+** (Python 3.11 recommended)
-* **Node.js 18+** & `npm` (for Web Dashboard)
-* **Semgrep CLI** (automatically installed via `requirements.txt`)
-* *(Optional for Cloud Sandbox)*: **DigitalOcean Personal Access Token**
-* *(Optional for Local AI)*: **Ollama** (`qwen2.5-coder:7b` or `llama3`)
-* *(Optional for Graph CPG)*: **Neo4j 5.x** running locally or via Docker
-
-### 1. Clone & Set Up Python Environment
-```bash
-git clone https://github.com/ayushkumar2601/vayu_hacktoberfest.git
-cd vayu_hacktoberfest
-
-python3 -m venv venv
-source venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
-pip install -e .
-```
-
-### 2. (Optional) Launch Neo4j via Docker
-```bash
-docker run -d \
-  --name vayu-neo4j \
-  -p 7474:7474 -p 7687:7687 \
-  -e NEO4J_AUTH=neo4j/password \
-  neo4j:latest
-```
-*(Note: If Neo4j is not running, VAYU's fail-soft client automatically activates its internal in-memory CPG engine without crashing!)*
-
-### 3. Run the Verification Test Suite (195 Passing Tests)
-```bash
-pytest -v
-# Output: 195 passed, 1 warning in 8.65s
-```
-
-### 4. Run Vulnerability Remediation via CLI
-```bash
-# Run with Local Isolated Sandbox
-vayu scan samples/vulnerable/command_injection --sandbox local
-
-# Run with Ephemeral DigitalOcean Cloud Droplet Sandbox
-export DIGITALOCEAN_TOKEN="dop_v1_your_token_here"
-vayu scan samples/vulnerable/command_injection --sandbox digitalocean
-```
-
-### 5. Launch the Web Review Console & 3D Terrain
-```bash
-cd vayu-nextjs
-npm install
-npm run dev
-# Open http://localhost:3000/reviews in your browser
-```
-
----
-
-## 🛡️ Mathematical Security Invariants
+## 🛡️ Formal Mathematical Security Invariants
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────┐
@@ -391,7 +354,7 @@ npm run dev
 
 ---
 
-## 🏆 Value ROI & Hackathon Winning Highlights
+## 📊 Enterprise Value ROI & Architectural Differentiation
 
 | Metric | Traditional Human Triage | Generic AI Scripts | VAYU Autonomous CRS |
 |---|---|---|---|
@@ -401,6 +364,70 @@ npm run dev
 | **Repository Safety** | Local execution risk | Prompt injection risk | **100% Isolated KVM Droplets** |
 | **Cross-File Taint Tracking** | Manual code review | None (File-blind) | **Neo4j Code Property Graph** |
 | **Cryptographic Provenance** | None | None | **in-toto SLSA v1.0 (ECDSA P-256)**|
+
+---
+
+## 🚀 Quickstart & Operational Guide
+
+### Prerequisites
+* **Python 3.10+** (Python 3.11 recommended)
+* **Node.js 18+** & `npm` (for Web Dashboard)
+* **Semgrep CLI** (automatically installed via `requirements.txt`)
+* *(Optional for Cloud Sandbox)*: **DigitalOcean Personal Access Token**
+* *(Optional for Local AI)*: **Ollama** (`qwen2.5-coder:7b` or `llama3`)
+* *(Optional for Graph CPG)*: **Neo4j 5.x** running locally or via Docker
+
+### 1. Clone & Set Up Python Environment
+```bash
+git clone https://github.com/ayushkumar2601/vayu_hacktoberfest.git
+cd vayu_hacktoberfest
+
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+pip install -e .
+```
+
+### 2. Launch Neo4j via Docker & Populate Code Property Graph
+```bash
+# Start Neo4j 5.x container
+docker run -d \
+  --name vayu-neo4j \
+  -p 7474:7474 -p 7687:7687 \
+  -e NEO4J_AUTH=neo4j/password \
+  neo4j:latest
+
+# Populate CPG from repository
+python scripts/index_neo4j.py samples/vulnerable/command_injection
+
+# Explore graph in browser at http://localhost:7474
+```
+*(Note: If Neo4j is not running, VAYU's fail-soft client automatically activates its internal in-memory CPG engine without crashing!)*
+
+### 3. Run the Verification Test Suite (195 Passing Tests)
+```bash
+pytest -v
+# Output: 195 passed, 1 warning in 10.30s (100% green)
+```
+
+### 4. Run Vulnerability Remediation via CLI
+```bash
+# Run with Local Isolated Sandbox
+vayu scan samples/vulnerable/command_injection --sandbox local
+
+# Run with Ephemeral DigitalOcean Cloud Droplet Sandbox
+export DIGITALOCEAN_TOKEN="dop_v1_your_token_here"
+vayu scan samples/vulnerable/command_injection --sandbox digitalocean
+```
+
+### 5. Launch the Web Review Console & 3D Terrain
+```bash
+cd vayu-nextjs
+npm install
+npm run dev
+# Open http://localhost:3000/reviews in your browser
+```
 
 ---
 
@@ -419,12 +446,12 @@ npm run dev
 
 ## 👤 Author & Team Details
 
-* **Author**: **[Ayush Kumar](https://github.com/ayushkumar2601)**
+* **Author / Team Lead**: **[Ayush Kumar](https://github.com/ayushkumar2601)**
 * **Team Name**: **HELLCODE**
 * **Project**: **VAYU — Autonomous Cyber Reasoning System (CRS)**
 * **License**: **Apache 2.0**
 
 <p align="center">
-  <sub>Built with pride for Hacktoberfest, DARPA AIxCC enthusiasts, and modern enterprise AppSec teams worldwide.</sub><br/>
+  <sub>Built for modern enterprise AppSec teams and mission-critical cloud infrastructure worldwide.</sub><br/>
   <b>⚡ VAYU — Autonomous, Graph-Powered, Fail-Closed Cyber Reasoning.</b>
 </p>
